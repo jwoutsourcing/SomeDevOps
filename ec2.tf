@@ -16,6 +16,7 @@ resource "aws_instance" "example" {
 
  provisioner "local-exec" {
     command = "yum install -y puppet mariadb-server"
+
   }
 }
 
