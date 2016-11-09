@@ -7,4 +7,9 @@ provider "aws" {
 resource "aws_instance" "example" {
 	ami = "ami-7dc6601d"
   instance_type = "t2.micro"
+
+ provisioner "local-exec" {
+    command = "yum install -y puppet mariadb-server"
+  }
 }
+
