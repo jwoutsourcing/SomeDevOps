@@ -1,6 +1,12 @@
+variable "access_key" {}
+variable "secret_key" {}
+variable "region" {
+  default = "us-west-2"
+}
+
 provider "aws" {
-  access_key = "AKIAJGN5WKB5355XOIPQ"
-  secret_key = "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"
+  access_key = "${var.access_key}"
+  secret_key = "${var.secret_key}"
   region     = "us-west-2"
 }
 
