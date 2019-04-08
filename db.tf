@@ -17,12 +17,12 @@ resource "aws_rds_cluster" "default" {
 
 resource "aws_security_group" "rds" {
   name        = "terraform_rds_security_group"
-  vpc_id      = "${aws_vpc.vpc.id}"
+  vpc_id      = "${aws_vpc.test-net.id}"
   ingress {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = ["${aws_security_group.default.id}"]
+    security_groups = ["${aws_security_group.rds.id}"]
   }
   egress {
     from_port   = 0
@@ -38,5 +38,5 @@ resource "aws_security_group" "rds" {
 
 resource "aws_db_subnet_group" "aurora" {
   name = "rds-subnet"
-  subnet_ids = ["${aws_subnet.pri-net.*.id}"]
+  subnet_id = "${element(aws_subnet.priv-net.*.id, count.index)}"
 }

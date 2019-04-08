@@ -23,3 +23,8 @@ variable vpc {
     subnet_bits           = "4"
    }
 }
+
+variable instance {
+   type = "string"
+   default = "ami-fbacaaec"
+}

@@ -23,7 +23,7 @@ resource "aws_elb" "lb" {
     interval            = 30
   }
 
-  instances                   = ["${aws_instance.foo.id}", "${aws_instance_bar.id}" ]
+  instances                   = [ "${element(aws_instance.web.*.id, count.index)}" ]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
@@ -34,5 +34,4 @@ resource "aws_elb" "lb" {
     buildwith = "Terraform" 
   }
 }
-
 
