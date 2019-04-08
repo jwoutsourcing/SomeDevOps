@@ -1,10 +1,5 @@
-provider "aws" {
-  region                  = "us-east-1"
-  shared_credentials_file = "/app/.aws/credentials"
-}
-
 resource "aws_vpc" "test-net" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block =  "${var.vpc["cidr_block"]}"
   enable_dns_support = true
   enable_dns_hostnames = true
   
@@ -16,9 +11,10 @@ resource "aws_vpc" "test-net" {
 
 resource "aws_subnet" "pub-net" {
   vpc_id = "${aws_vpc.test-net.id}"
-  cidr_block = "10.0.1.0/24"
+  count = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
+  cidr_block  = "${cidrsubnet(var.vpc["cidr_block"], var.vpc["subnet_bits"], count.index)}"
   map_public_ip_on_launch = "true"
-  availability_zone = "us-east-1a"
+  availability_zone = "${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}" 
 
   tags {
     name = "Public-net"
@@ -28,8 +24,9 @@ resource "aws_subnet" "pub-net" {
 
 resource "aws_subnet" "priv-net" {
    vpc_id = "${aws_vpc.test-net.id}"
-   cidr_block = "10.0.2.0/24"
-   availability_zone = "us-east-1a"
+   count = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
+   cidr_block = "${cidrsubnet(var.vpc["cidr_block"], var.vpc["subnet_bits"], count.index)}"
+   availability_zone = "${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}" 
   
    tags {
      name = "Private-sub-net"
@@ -71,7 +68,7 @@ resource "aws_route_table" "pri-route-table" {
 
 resource "aws_nat_gateway" "test-gw" {
    allocation_id = "${aws_eip.elastic_ip.id}"
-   subnet_id = "${aws_subnet.pub-net.id}"
+  subnet_id = "${element(aws_subnet.pub-net.*.id, count.index)}"
    depends_on = [ "aws_internet_gateway.internet-gateway" ]
 
   tags {
@@ -88,12 +85,12 @@ resource "aws_route" "pri-route" {
 
 
 resource "aws_route_table_association" "pub-sub-ass" {
-    subnet_id = "${aws_subnet.pub-net.id}"
+    subnet_id = "${element(aws_subnet.pub-net.*.id, count.index)}"
     route_table_id = "${aws_vpc.test-net.main_route_table_id}"
 }
 
 resource "aws_route_table_association" "priv-sub-ass" {
-     subnet_id = "${aws_subnet.priv-net.id}"
+     subnet_id = "${element(aws_subnet.priv-net.*.id, count.index)}"
      route_table_id = "${aws_route_table.pri-route-table.id}"
 }
 
