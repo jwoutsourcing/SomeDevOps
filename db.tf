@@ -35,3 +35,8 @@ resource "aws_security_group" "rds" {
     buildwith = "Terraform"
   }
 }
+
+resource "aws_db_subnet_group" "aurora" {
+  name = "rds-subnet"
+  subnet_ids = ["${aws_subnet.pri-net.*.id}"]
+}
