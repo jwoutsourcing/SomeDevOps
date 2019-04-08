@@ -1,5 +1,6 @@
 resource "aws_elb" "lb" {
-  availabilty_zones = [ "us-west-1a", "us-west-1b" ]
+  count = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
+  availability_zone = "${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}" 
   name = "test-elb"
 
   listener {
