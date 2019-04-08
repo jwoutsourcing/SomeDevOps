@@ -1,5 +1,5 @@
 resource "aws_rds_cluster_instance" "cluster_instances" {
-  count = "2"
+  count = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
   identifier         = "aurora-cluster-mysql-${count.index}"
   cluster_identifier = "${aws_rds_cluster.default.id}"
   instance_class = "db.t2.small"
