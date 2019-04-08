@@ -1,4 +1,4 @@
-resource "aws_security_group" "3tier-security-group" {
+resource "aws_security_group" "sec-group" {
   name        = "3-tier Security Group"
   description = "3-tier Security Group"
 

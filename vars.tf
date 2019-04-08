@@ -24,7 +24,6 @@ variable vpc {
    }
 }
 
-variable instance {
-   type = "string"
-   default = "ami-fbacaaec"
+variable ami {
+   default =  "ami-fbacaaec"
 }

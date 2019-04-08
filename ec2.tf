@@ -1,5 +1,5 @@
-resrouce "aws_instance" "web" { 
-  ami = "${var.instance.default}"
+resource "aws_instance" "web" { 
+  ami = "ami-fbacaaec"
   count = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
   availability_zone = "${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}" 
   instance_type = "t2.micro"
