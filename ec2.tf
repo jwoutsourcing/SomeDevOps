@@ -26,6 +26,7 @@ resource "aws_launch_configuration" "as_conf" {
 
 resource "aws_autoscaling_group" "this" {
   count                     = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
+  availability_zones        = ["${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}"]
   name                      = "this-asg"
   launch_configuration      = "${aws_launch_configuration.as_conf.name}"
   max_size                  = "5"
