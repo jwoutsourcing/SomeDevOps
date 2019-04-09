@@ -7,7 +7,7 @@ resource "aws_security_group" "sec-group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-     cidr_blocks = ["${aws_subnet.priv-net.*.cidr_block}"]
+    cidr_blocks = ["${aws_subnet.priv-net.*.cidr_block}"]
   }
 
   # allowing web connections since it runs a web server
@@ -27,4 +27,3 @@ resource "aws_security_group" "sec-group" {
 
   vpc_id = "${ aws_vpc.test-net.id }"
 }
-

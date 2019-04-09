@@ -1,18 +1,26 @@
 resource "aws_elb" "lb" {
-  count = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
-  availability_zones = [ "${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}" ]
-  name = "test-elb"
+  count              = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
+  availability_zones = ["${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}"]
+  subnets            = ["${element(aws_subnet.priv-net.*.id, count.index)}"]
+  name               = "test-elb"
 
   listener {
-    instance_port      = 8080
-    instance_protocol  = "http"
-    lb_port =  "80"
-    lb_protocol = "http"
+    instance_port     = 8080
+    instance_protocol = "http"
+    lb_port           = "80"
+    lb_protocol       = "http"
+  }
+
+  listener {
+    instance_port     = 8000
+    instance_protocol = "http"
+    lb_port           = 443
+    lb_protocol       = "https"
   }
 
   access_logs {
-    bucket        = "steve-wood-dev"
-    interval      = 60
+    bucket   = "steve-wood-dev"
+    interval = 60
   }
 
   health_check {
@@ -23,15 +31,13 @@ resource "aws_elb" "lb" {
     interval            = 30
   }
 
-  instances                   = [ "${element(aws_instance.web.*.id, count.index)}" ]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
   connection_draining_timeout = 400
 
   tags = {
-    Name = "Test ELB"
-    buildwith = "Terraform" 
+    Name      = "Test ELB"
+    buildwith = "Terraform"
   }
 }
-
