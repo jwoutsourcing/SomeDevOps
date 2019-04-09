@@ -2,6 +2,15 @@ provider "aws" {
   shared_credentials_file = "/app/.aws/credentials"
 }
 
+data "terraform_remote_state" "network" {
+  backend = "s3"
+  config = {
+    bucket = "steve-wood-dev"
+    key    = "network/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
 variable "provider" {
   type = "map"
 
