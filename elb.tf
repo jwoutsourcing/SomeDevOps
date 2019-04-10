@@ -32,6 +32,7 @@ resource "aws_elb" "lb" {
     interval            = 30
   }
 
+  instances                   = ["${element(aws_instance.web.*.id, count.index)}"]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true

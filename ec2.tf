@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+resource "aws_instance" "web" {
+  ami               = "ami-fbacaaec"
+  count             = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
+  availability_zone = "${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}"
+  instance_type     = "t2.micro"
+  subnet_id         = "${element(aws_subnet.pub-net.*.id, count.index)}"
+
+  tags = {
+    name      = "Web Servers"
+    buildwith = "Terraform"
+  }
+}
+=======
 data "aws_ami" "amazon-linux" {
   most_recent = "true"
 
@@ -43,3 +57,4 @@ resource "aws_autoscaling_attachment" "asg_attach" {
   autoscaling_group_name = "${aws_autoscaling_group.this.*.id}"
   elb                    = "${aws_elb.lb.*.id}"
 }
+>>>>>>> f3fa6dd128c29b7b6086cd081909f7d4969869b0

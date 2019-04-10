@@ -8,6 +8,10 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
 resource "aws_rds_cluster" "mysql-cluster" {
   cluster_identifier = "aurora-mysql-cluster"
   engine             = "aurora-mysql"
+<<<<<<< HEAD
+  engine_version     = "5.6"
+=======
+>>>>>>> f3fa6dd128c29b7b6086cd081909f7d4969869b0
   count              = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
   availability_zones = ["${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}"]
   database_name      = "piesrus"
