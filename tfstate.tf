@@ -1,14 +1,9 @@
-terraform {
-  backend "s3" {
-    shared_credentials_file = "/app/.aws/credentials"
-    bucket                  = "steve-wood-dev"
-    key                     = "terraform/tfstate"
-    region                  = "us-east-1"
-  }
+provider "aws" {
+  shared_credentials_file = "/app/.aws/credentials"
 }
 
 resource "aws_s3_bucket" "tfstatebucket" {
-  bucket = "rl.tfstate"
+  bucket = "steve-wood-tfstate"
   acl    = "private"
 
   versioning {

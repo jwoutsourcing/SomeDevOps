@@ -8,12 +8,11 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
 resource "aws_rds_cluster" "mysql-cluster" {
   cluster_identifier = "aurora-mysql-cluster"
   engine             = "aurora-mysql"
-  engine_version     = "5.6"
   count              = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
   availability_zones = ["${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}"]
   database_name      = "piesrus"
   master_username    = "pieman"
-  master_password    = ""
+  master_password    = "p13m4np13s!"
 }
 
 resource "aws_security_group" "rds" {

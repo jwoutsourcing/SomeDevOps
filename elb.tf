@@ -12,10 +12,11 @@ resource "aws_elb" "lb" {
   }
 
   listener {
-    instance_port     = 8000
-    instance_protocol = "http"
-    lb_port           = 443
-    lb_protocol       = "https"
+    instance_port      = 8000
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = "arn:aws:acm:us-east-2:953116172017:certificate/7078f7a1-822e-4713-9d43-c61b5df041df"
   }
 
   access_logs {
