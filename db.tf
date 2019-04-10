@@ -12,7 +12,7 @@ resource "aws_rds_cluster" "mysql-cluster" {
   availability_zones = ["${element(split(",", lookup(var.azs, var.provider["region"])), count.index)}"]
   database_name      = "piesrus"
   master_username    = "pieman"
-  master_password    = "p13m4np13s!"
+  master_password    = ""
 }
 
 resource "aws_security_group" "rds" {
