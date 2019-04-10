@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 resource "aws_instance" "web" {
   ami               = "ami-fbacaaec"
   count             = "${length(split(",", lookup(var.azs, var.provider["region"])))}"
@@ -11,7 +10,6 @@ resource "aws_instance" "web" {
     buildwith = "Terraform"
   }
 }
-=======
 data "aws_ami" "amazon-linux" {
   most_recent = "true"
 
@@ -57,4 +55,3 @@ resource "aws_autoscaling_attachment" "asg_attach" {
   autoscaling_group_name = "${aws_autoscaling_group.this.*.id}"
   elb                    = "${aws_elb.lb.*.id}"
 }
->>>>>>> f3fa6dd128c29b7b6086cd081909f7d4969869b0
