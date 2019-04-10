@@ -47,10 +47,7 @@ resource "aws_route" "r" {
   route_table_id         = "${aws_vpc.test-net.main_route_table_id}"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${aws_internet_gateway.internet-gateway.id}"
-<<<<<<< HEAD
-=======
   depends_on             = ["aws_internet_gateway.internet-gateway", "aws_route_table.pri-route-table"]
->>>>>>> f3fa6dd128c29b7b6086cd081909f7d4969869b0
 }
 
 resource "aws_eip" "elastic_ip" {
